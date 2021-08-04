@@ -1,0 +1,9 @@
+El propósito de tener distintos tipos de streams no solo es simplificar el código, tienen pequeñas diferencias en su objetivo.
+
+Tipos de streams
+Hay cuatro tipos fundamentales de streams en Node.js
+
+Writable: streams en los que los datos pueden ser escritos.
+Readable: streams en los que los datos pueden ser leídos.
+Duplex: streams que pueden ser leídos y escritos.
+Transform: Duplex streams que pueden modificar o transformar los datos cuando son escritos o leídos.
