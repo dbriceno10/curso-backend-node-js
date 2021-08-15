@@ -1,0 +1,86 @@
+
+Hola Devs:
+
+¿Que es Express.js?
+Express es un framework o marco de trabajo desarrollado sobre Nodejs, lo que quiere decir que provee toda la funcionalidad que necesitas para hacer aplicaciones web, permitiendo estructurar tu proyecto de una manera más fácil.
+Express.js es un Framework, del creador T.J. Holowaychuk, , inspirado en el framework Sinatra de Ruby. Es considerado un framework minimalista, es decir que viene con funcionalidades muy básicas, que luego a medida que crezca la aplicación se puede ir extendiendo a través de los módulos que puedes encontrar en npm, Además que es el framework de Node.js Más popular.
+
+Template: Como su nombre en espanol lo dice, es una plantilla que podemos usar para apartir de ahi desarrollar nuestro proyecto.
+
+Routing: Es el sistema de rutas que maneja express.js para manejar las rutas de una manera mas facil y sencilla, asi podremos ejecutar o mostrar un codigo en determinada ruta o proceso.
+
+Middlewares: Las funciones de middleware son funciones que tienen acceso al objeto de solicitud (req), al objeto de respuesta (res), esto quiere decir que es auqella funcion que esta en medio del req y el res, y con la cual podemos manipular los datos antes de que lleguen a su destino.
+
+package.js:
+dev: variable de entorno debug imprime todo lo que tenga la my space de la aplicación, nodemon que hace refresco automático cuando hay un cambio
+
+Clase 17: primer servidor con express
+
+dotenv
+Es un módulo independiente que carga variables de entorno de un archivo .env en process.env.
+npm i express dotenv
+
+Nodemon
+Nodemon es una utilidad que supervisará cualquier cambio en los recursos y reiniciará automáticamente su servidor.
+npm i -D nodemon eslint eslint-config-prettier eslint-plugin-prettier prettier
+
+Husky hooks
+Es un módulo que puede prevenir realizar git commit o git push sin formato u otros conflictos no deseados.
+npx mrm lint-staged
+
+Vamos a crear un nuevo archivo de configuración donde vamos a adstraer nuestras variables de entorno
+
+const express = require('express');
+const app = express();
+const { config } = require('./config/index');
+
+const divider = (year, divisor) => {
+  return year % divisor === 0 ? true : false;
+};
+
+app.get('/', (request, response) => {
+  response.send(`Place a year after the url and find out if it is leap year: 
+  http://localhost:${config.port}/1994`);
+});
+
+/**
+ * The year is leap year if
+ * first - it is divisible by 4
+ * second - it is not divisible by 100
+ * third - or it is divisible by 400
+ */
+app.get('/:year', (request, response) => {
+  const { year } = request.params;
+  if ((divider(year, 4) && !divider(year, 100)) || divider(year, 400)) {
+    response.send(`The year 
+    ${year} is leap year :D`);
+  }
+  response.send(`The year 
+  ${year} is NOT leap year :C`);
+});
+
+app.listen(config.port, () => {
+  console.log(`listening address http://localhost:${config.port}`);
+});
+
+Para los que usan Windows y no les funciona el script cuando lo tienen de esta forma:
+
+"dev": "DEBUG=app:* nodemon index"
+De esta forma sí funciona:
+
+"dev": "set DEBUG=app:*&& nodemon index"
+
+Para los que le de error DEBUG o NODE_ENV en el package.json en Windows.
+SOLUCION:
+
+"scripts": {
+    "dev": "SET DEBUG=app:* & nodemon index",
+    "start": "SET NODE_ENV=production & node index"
+  },
+
+  Para los que usan Windows y no les funciona el script cuando lo tienen de esta forma:
+
+"dev": "DEBUG=app:* nodemon index"
+De esta forma sí funciona:
+
+"dev": "set DEBUG=app:*&& nodemon index"

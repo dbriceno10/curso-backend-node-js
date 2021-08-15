@@ -11,5 +11,6 @@
     "js"
   ],
   "author": "Daniel Briceño <daniel.b100726@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
