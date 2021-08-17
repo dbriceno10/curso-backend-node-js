@@ -1,10 +1,5 @@
 const express = require('express');
-//Mocks: son archivos de datos "falsos", para tener data de prueba
-const { moviesMock } = require('../utils/mocks/movies');
-
-/** vamos a recibir una aplicación de express, lo que nos permite ser dinamicos y obtener el control,
- * sobre que aplicación va a consumir nuestra ruta.
- */
+const MoviesService = require('../services/movies');
 
 const moviesApi = (app) => {
   //Creamos el router
@@ -13,20 +8,18 @@ const moviesApi = (app) => {
 
   app.use('/api/movies', router);
 
+  const moviesService = new MoviesService();
+
   // Apartir de aqui lo que hacemos es alimentar el router con las otras rutas
   // Cuando se le asigna un get al home, y el home va a ser api/movies, que fue el que definimos arriba
 
-  /* nos va a devolver las salidas, como estamos escribiendo código asincrono debemos usar la palabra
-  clave async, recuerden que una ruta recibe el request, el response object y en este caso vamos a 
-  recibir la funcionalidad next, esto hace parte de la teoria de middleware que vamos a explicar 
-  más adelante
-*/
-
   // router.get('/', async function (req, res, next) {
-    router.get('/', async (req, res, next) => {
+  router.get('/', async (req, res, next) => {
+    const { tags } = req.query;
+
     try {
-      const movies = await Promise.resolve(moviesMock);
-      
+      const movies = await moviesService.getMovies({ tags });
+
       // Usamos response, definimos el estatus, que como hablamos con anterioridad va a ser 200 de ok
       // definimos su estructura json
       res.status(200).json({
@@ -40,9 +33,14 @@ const moviesApi = (app) => {
 
   //Recibe el id de la película
   router.get('/:movieID', async (req, res, next) => {
+    const { movieId } = req.params;
+    //La diferencia principal entre params y query es que
+    //params: están establecidos en la url
+    //query: se le pone el signo "?", el nombre del query y se puede concatenar
+
     try {
       //No interesa que nos regrese la priméra película
-      const movies = await Promise.resolve(moviesMock[0]);
+      const movies = await moviesService.getMovie({ movieId });
       res.status(200).json({
         data: movies,
         message: `Movie Retrieved`,
@@ -53,10 +51,13 @@ const moviesApi = (app) => {
   });
   //Creamos la película
   router.post('/', async (req, res, next) => {
+    const { body: movie } = req;
+
     try {
       //Devolvemos el id de la primera película
-      const createMovieId = await Promise.resolve(moviesMock[0].id);
-      res.status(201).json({//Como estamos creando el código que debemos devolver es 201
+      const createMovieId = await moviesService.createMovie({ movie });
+      res.status(201).json({
+        //Como estamos creando el código que debemos devolver es 201
         data: createMovieId,
         message: `Movie Created`,
       });
@@ -67,8 +68,14 @@ const moviesApi = (app) => {
 
   //actualización de la película
   router.put('/:movieId', async (req, res, next) => {
+    const { movieId } = req.params;
+    const { body: movie } = req;
+
     try {
-      const updatedMovieId = await Promise.resolve(moviesMock[0].id);
+      const updatedMovieId = await moviesService.updateMovie({
+        movieId,
+        movie,
+      });
       res.status(200).json({
         data: updatedMovieId,
         message: `Movie Updated`,
@@ -80,8 +87,10 @@ const moviesApi = (app) => {
 
   //Eliminando una película
   router.delete('/:movieId', async (req, res, next) => {
+    const { movieId } = req.params;
+
     try {
-      const deleteMovieId = await Promise.resolve(moviesMock[0].id);
+      const deleteMovieId = await moviesService.deleteMovie({ movieId });
       res.status(200).json({
         data: deleteMovieId,
         message: `Movie Deleted`,
