@@ -9,7 +9,7 @@ Template: Como su nombre en espanol lo dice, es una plantilla que podemos usar p
 
 Routing: Es el sistema de rutas que maneja express.js para manejar las rutas de una manera mas facil y sencilla, asi podremos ejecutar o mostrar un codigo en determinada ruta o proceso.
 
-Middlewares: Las funciones de middleware son funciones que tienen acceso al objeto de solicitud (req), al objeto de respuesta (res), esto quiere decir que es auqella funcion que esta en medio del req y el res, y con la cual podemos manipular los datos antes de que lleguen a su destino.
+Middlewares: Las funciones de middleware son funciones que tienen acceso al objeto de solicitud (req), al objeto de respuesta (res), esto quiere decir que es aquella función que está en medio del req y el res, y con la cual podemos manipular los datos antes de que lleguen a su destino.
 
 package.js:
 dev: variable de entorno debug imprime todo lo que tenga la my space de la aplicación, nodemon que hace refresco automático cuando hay un cambio
