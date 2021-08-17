@@ -37,6 +37,59 @@ const moviesApi = (app) => {
       next(error);
     }
   });
+
+  //Recibe el id de la película
+  router.get('/:movieID', async (req, res, next) => {
+    try {
+      //No interesa que nos regrese la priméra película
+      const movies = await Promise.resolve(moviesMock[0]);
+      res.status(200).json({
+        data: movies,
+        message: `Movie Retrieve`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+  //Creamos la película
+  router.post('/', async (req, res, next) => {
+    try {
+      //Devolvemos el id de la primera película
+      const createMovieId = await Promise.resolve(moviesMock[0].id);
+      res.status(201).json({//Como estamos creando el código que debemos devolver es 201
+        data: createMovieId,
+        message: `Movie Created`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  //actualización de la película
+  router.get('/:movieId', async (req, res, next) => {
+    try {
+      const updatedMovieId = await Promise.resolve(moviesMock[0].od);
+      res.status(200).json({
+        data: updatedMovieId,
+        message: `Movie Updated`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  //Eliminando una película
+  router.delete('/:movieId', async (req, res, next) => {
+    try {
+      const deleteMovieId = await Promise.resolve(moviesMock[0].id);
+      res.status(200).json({
+        data: deleteMovieId,
+        message: `Movie Deleted`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 };
 
 module.exports = moviesApi;
