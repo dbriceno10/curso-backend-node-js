@@ -45,7 +45,7 @@ const moviesApi = (app) => {
       const movies = await Promise.resolve(moviesMock[0]);
       res.status(200).json({
         data: movies,
-        message: `Movie Retrieve`,
+        message: `Movie Retrieved`,
       });
     } catch (error) {
       next(error);
@@ -66,9 +66,9 @@ const moviesApi = (app) => {
   });
 
   //actualización de la película
-  router.get('/:movieId', async (req, res, next) => {
+  router.put('/:movieId', async (req, res, next) => {
     try {
-      const updatedMovieId = await Promise.resolve(moviesMock[0].od);
+      const updatedMovieId = await Promise.resolve(moviesMock[0].id);
       res.status(200).json({
         data: updatedMovieId,
         message: `Movie Updated`,
