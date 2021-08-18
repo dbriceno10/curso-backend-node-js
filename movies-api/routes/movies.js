@@ -99,6 +99,25 @@ const moviesApi = (app) => {
       next(error);
     }
   });
+
+  //Implementación de método PATCH para actualización parcial
+  router.patch('/:movieId', async (req, res, next) => {
+    const { movieId } = req.params;
+    const { body: movie } = req;
+    try {
+      const updateMovie = await moviesService.partialUpdateMovie({
+        movieId,
+        movie,
+      });
+
+      res.status(200).json({
+        data: updateMovie,
+        message: `Movie Updated Partially`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 };
 
 module.exports = moviesApi;
