@@ -13,8 +13,8 @@ const moviesApi = (app) => {
   // Apartir de aqui lo que hacemos es alimentar el router con las otras rutas
   // Cuando se le asigna un get al home, y el home va a ser api/movies, que fue el que definimos arriba
 
-  // router.get('/', async function (req, res, next) {
-  router.get('/', async (req, res, next) => {
+  router.get('/', async function (req, res, next) {
+  // router.get('/', async (req, res, next) => {
     const { tags } = req.query;
 
     try {
@@ -32,7 +32,7 @@ const moviesApi = (app) => {
   });
 
   //Recibe el id de la película
-  router.get('/:movieID', async (req, res, next) => {
+  router.get('/:movieID', async function (req, res, next){
     const { movieId } = req.params;
     //La diferencia principal entre params y query es que
     //params: están establecidos en la url

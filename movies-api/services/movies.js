@@ -1,37 +1,44 @@
-//vamos a delegar la responsabilidad del manejo de los mocks(datos), aquí en la capa de servicios y no más en las rutas
+//Clase 28, eliminamos los mocks para trabajar con mongo
 
-const { moviesMock } = require('../utils/mocks/movies');
+const MongoLib = require('../lib/mongo');
 
 class MoviesService {
-  async getMovies() {
-    const movies = await Promise.resolve(moviesMock);
+  constructor() {
+    this.collection = "movies"
+    this.mongoDB = new MongoLib()
+  }
+
+  async getMovies({ tags }) {
+    //En el query vamos a buscar los tags, el $in es una sintaxis de mongo
+    const query = tags && { tags: { $in: tags }}
+    const movies = await this.mongoDB.getAll(this.collection, query)
     return movies || [];
   }
 
-  async getMovie() {
-    const movie = await Promise.resolve(moviesMock[0]);
+  async getMovie({ movieId }) {
+    const movie = await this.mongoDB.get(this.collection, movieId)
     return movie || {};
   }
 
-  async createMovie() {
-    this.createMovieId = await Promise.resolve(moviesMock[0].id);
+  async createMovie({ movie }) {
+    this.createMovieId = await this.mongoDB.create(this.collection, movie)
     return this.createMovieId || {};
   }
 
-  async updateMovie() {
-    const updateMovieId = await Promise.resolve(moviesMock[0].id);
+  async updateMovie({ movieId, movie } = {}) {//Por defecto hacemos que los parámetros acá sea un objeto vacío para evitar problemas
+    const updateMovieId = await this.mongoDB.create(this.collection, movieId, movie)
     return updateMovieId;
   }
 
-  async deleteMovie() {
-    const deletedMovieId = await Promise.resolve(moviesMock[0].id);
+  async deleteMovie({ movieId }) {
+    const deletedMovieId = await this.mongoDB.delete(this.collection, movieId)
     return deletedMovieId;
   }
 
-  async partialUpdateMovie() {
-    const updateMovieId = await Promise.resolve(moviesMock[0].id);
-    return updateMovieId;
-  }
+  // async partialUpdateMovie() {
+  //   const updateMovieId = await Promise.resolve(moviesMock[0].id);
+  //   return updateMovieId;
+  // }
 }
 
 module.exports = MoviesService;

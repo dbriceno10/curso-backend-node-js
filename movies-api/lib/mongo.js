@@ -39,14 +39,20 @@ class MongoLib {
   getAll(collection, query) {
     //Nos va a traer todos los elementos de la conección
     return this.connect().then((db) => {
-      return db.collection(collection).find(query).toArray();
+      // return db.collection(collection).find(query).toArray();
+      return db.
+        collection(collection)
+        .find(query)
+        .toArray();
     });
   }
 
   get(collection, id) {
     //nos va a traer un único elemento de la conección
     return this.connect().then((db) => {
-      return db.collection(collection).findOne({ _id: ObjectId(id) });
+      return db
+        .collection(collection)
+        .findOne({ _id: ObjectId(id) });
     });
   }
 
@@ -54,7 +60,9 @@ class MongoLib {
     //nos permite agregar datos
     return this.connect()
       .then((db) => {
-        return db.collection(collection).insertOne(data);
+        return db
+          .collection(collection)
+          .insertOne(data);
       })
       .then((result) => result.insertedId);
   }
@@ -74,7 +82,9 @@ class MongoLib {
     //nos permite borrar un dato en específico
     return this.connect()
       .then((db) => {
-        return db.collection(collection).deleteOne({ _id: ObjectId(id) });
+        return db
+          .collection(collection)
+          .deleteOne({ _id: ObjectId(id) });
       })
       .then(() => id);
   }
