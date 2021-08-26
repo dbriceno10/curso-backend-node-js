@@ -32,7 +32,7 @@ const moviesApi = (app) => {
   });
 
   //Recibe el id de la película
-  router.get('/:movieID', async function (req, res, next){
+  router.get('/:movieId', async function (req, res, next) {
     const { movieId } = req.params;
     //La diferencia principal entre params y query es que
     //params: están establecidos en la url
@@ -50,7 +50,7 @@ const moviesApi = (app) => {
     }
   });
   //Creamos la película
-  router.post('/', async (req, res, next) => {
+  router.post('/', async function (req, res, next) {
     const { body: movie } = req;
 
     try {
@@ -67,7 +67,7 @@ const moviesApi = (app) => {
   });
 
   //actualización de la película
-  router.put('/:movieId', async (req, res, next) => {
+  router.put('/:movieId', async function (req, res, next) {
     const { movieId } = req.params;
     const { body: movie } = req;
 
@@ -86,7 +86,7 @@ const moviesApi = (app) => {
   });
 
   //Eliminando una película
-  router.delete('/:movieId', async (req, res, next) => {
+  router.delete('/:movieId', async function (req, res, next) {
     const { movieId } = req.params;
 
     try {

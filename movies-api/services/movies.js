@@ -22,7 +22,7 @@ class MoviesService {
 
   async createMovie({ movie }) {
     this.createMovieId = await this.mongoDB.create(this.collection, movie)
-    return this.createMovieId || {};
+    return this.createMovieId;
   }
 
   async updateMovie({ movieId, movie } = {}) {//Por defecto hacemos que los parámetros acá sea un objeto vacío para evitar problemas
