@@ -43,7 +43,7 @@ class MongoLib {
       return db.
         collection(collection)
         .find(query)
-        .toArray();
+        .toArray();//para manenejarlo como tipo json
     });
   }
 
@@ -80,6 +80,7 @@ class MongoLib {
 
   delete(collection, id) {
     //nos permite borrar un dato en específico
+    //Nos no devuelve un id, pero para tener una referencia de cual eliminamos vamos a pasar ese id como referencia
     return this.connect()
       .then((db) => {
         return db
