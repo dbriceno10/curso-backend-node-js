@@ -3,7 +3,7 @@ const app = express();
 
 const { config } = require('./config/index');
 const moviesApi = require('./routes/movies.js');
-
+//middelware de body parser
 app.use(express.json());
 
 moviesApi(app);
