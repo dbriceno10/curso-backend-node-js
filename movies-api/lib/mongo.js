@@ -5,7 +5,7 @@ const { config } = require('../config');
 // encodeURIComponent nos garantizá que si por alguna razón hay algunos caracteres especiales
 // no tengamos problemas a la hora de conectarnos.
 
-const USER = encodeURIComponent(config.dbuser);
+const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
 const DB_NAME = config.dbName;
 
@@ -22,7 +22,7 @@ class MongoLib {
     //connection no es una variable que hayamos declarado antes, funciona como una variable estática
     if (!MongoLib.connection) {
       MongoLib.connection = new Promise((resolve, reject) => {
-        this.client.connect((error) => {
+        this.client.connect(error => {
           if (error) {
             reject(error);
           }
@@ -32,7 +32,7 @@ class MongoLib {
       });
     }
 
-    return MongoLib.connection;
+    return MongoLib.connection;//Si la conección existe la retorno
   }
 
   //Creando nuestra implementación de acciones
