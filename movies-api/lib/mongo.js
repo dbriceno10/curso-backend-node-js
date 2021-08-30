@@ -8,13 +8,11 @@ const { config } = require('../config');
 const USER = encodeURIComponent(config.dbUser);
 const PASSWORD = encodeURIComponent(config.dbPassword);
 const DB_NAME = config.dbName;
-
-const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${DB_NAME}?retryWrites=true&w=majority`;
-// mongodb+srv://db_user_platzivideos:<password>@cluster0-nnl4g.mongodb.net/test?retryWrites=true&w=majority
-
+const MONGO_URI = `mongodb+srv://${USER}:${PASSWORD}@${config.dbHost}/${DB_NAME}?retryWrites=true&w=majority`;
+// const uri = "mongodb+srv://db_user_platzivideos:<password>@cluster0.yunrn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 class MongoLib {
   constructor() {
-    this.client = new MongoClient(MONGO_URI, { useNewUrlParser: true });
+    this.client = new MongoClient(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
     this.dbName = DB_NAME;
   }
 
