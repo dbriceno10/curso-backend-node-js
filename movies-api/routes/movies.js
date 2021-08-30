@@ -14,7 +14,7 @@ const moviesApi = (app) => {
   // Cuando se le asigna un get al home, y el home va a ser api/movies, que fue el que definimos arriba
 
   router.get('/', async function (req, res, next) {
-  // router.get('/', async (req, res, next) => {
+    // router.get('/', async (req, res, next) => {
     const { tags } = req.query;
 
     try {
@@ -101,23 +101,23 @@ const moviesApi = (app) => {
   });
 
   //Implementación de método PATCH para actualización parcial
-  router.patch('/:movieId', async (req, res, next) => {
-    const { movieId } = req.params;
-    const { body: movie } = req;
-    try {
-      const updateMovie = await moviesService.partialUpdateMovie({
-        movieId,
-        movie,
-      });
+  // router.patch('/:movieId', async (req, res, next) => {
+  //   const { movieId } = req.params;
+  //   const { body: movie } = req;
+  //   try {
+  //     const updateMovie = await moviesService.partialUpdateMovie({
+  //       movieId,
+  //       movie,
+  //     });
 
-      res.status(200).json({
-        data: updateMovie,
-        message: `Movie Updated Partially`,
-      });
-    } catch (error) {
-      next(error);
-    }
-  });
+  //     res.status(200).json({
+  //       data: updateMovie,
+  //       message: `Movie Updated Partially`,
+  //     });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // });
 };
 
 module.exports = moviesApi;
