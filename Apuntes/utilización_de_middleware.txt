@@ -21,3 +21,12 @@ Middleware de terceros
 Puede cargar middleware de nivel de aplicación y de nivel de direccionador con una vía de acceso de montaje opcional. También puede cargar una serie de funciones de middleware a la vez, lo que crea una subpila del sistema de middleware en un punto de montaje.
 
 https://expressjs.com/es/guide/using-middleware.html
+
+
+Dato: El orden en el que ponemos los middlewares en este caso importa muchísimo.
+
+Estamos poniendo los middlewares de error después de las rutas porque cuando se crea el error en la ruta pasa al catch y ese catch tiene un callback next() que le pasa el error al siguiente middleware.
+
+El siguiente middleware es logErrors que igual tiene un callback next() que le envía el error al siguiente middleware.
+
+Podemos comprobar que si invertimos el orden de los middlewares y ponemos _errorHandler antes que logErrors en el index después de las rutas vemos que no funcionará el middleware logErrors porque el middleware errorHandler no está pasándole el error a un siguiente middleware por medio del callback next()
