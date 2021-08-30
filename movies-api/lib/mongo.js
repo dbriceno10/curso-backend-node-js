@@ -24,7 +24,7 @@ class MongoLib {
           if (error) {
             reject(error);
           }
-          console.log('Connected succesfully to mongo');
+          console.log('Connected succesfully to mongo');//eslint-disable-line
           resolve(this.client.db(this.dbName));
         });
       });

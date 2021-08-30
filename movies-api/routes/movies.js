@@ -19,7 +19,7 @@ const moviesApi = (app) => {
 
     try {
       const movies = await moviesService.getMovies({ tags });
-
+      // throw new Error("Error getting movies")
       // Usamos response, definimos el estatus, que como hablamos con anterioridad va a ser 200 de ok
       // definimos su estructura json
       res.status(200).json({
