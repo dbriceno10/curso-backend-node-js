@@ -1,6 +1,14 @@
 const express = require('express');
 const MoviesService = require('../services/movies');
 
+const {
+  movieIdSchema,
+  createMovieSchema,
+  updateMovieSchema,
+} = require('../utils/schemas/movies');
+
+const validationHandler = require('../utils/middleware/validationHandler');
+
 const moviesApi = (app) => {
   //Creamos el router
   const router = express.Router();
@@ -32,73 +40,93 @@ const moviesApi = (app) => {
   });
 
   //Recibe el id de la película
-  router.get('/:movieId', async function (req, res, next) {
-    const { movieId } = req.params;
-    //La diferencia principal entre params y query es que
-    //params: están establecidos en la url
-    //query: se le pone el signo "?", el nombre del query y se puede concatenar
+  router.get(
+    '/:movieId',
+    validationHandler({ movieId: movieIdSchema }, 'params'),
+    async function (req, res, next) {
+      // validationHandler por defecto va a tratar de sacar los datos del body, pero como el id de la película se encuentra dentro de los parámetros, los voy a tomar de allí
+      const { movieId } = req.params;
+      //La diferencia principal entre params y query es que
+      //params: están establecidos en la url
+      //query: se le pone el signo "?", el nombre del query y se puede concatenar
 
-    try {
-      //No interesa que nos regrese la priméra película
-      const movies = await moviesService.getMovie({ movieId });
-      res.status(200).json({
-        data: movies,
-        message: `Movie Retrieved`,
-      });
-    } catch (error) {
-      next(error);
+      try {
+        //No interesa que nos regrese la priméra película
+        const movies = await moviesService.getMovie({ movieId });
+        res.status(200).json({
+          data: movies,
+          message: `Movie Retrieved`,
+        });
+      } catch (error) {
+        next(error);
+      }
     }
-  });
+  );
   //Creamos la película
-  router.post('/', async function (req, res, next) {
-    const { body: movie } = req;
+  router.post(
+    '/',
+    validationHandler(createMovieSchema),
+    async function (req, res, next) {
+      //Los middlewares se colocan entre la ruta('/') y la definición de la ruta(async function(req, res, next))
+      const { body: movie } = req;
 
-    try {
-      //Devolvemos el id de la primera película
-      const createMovieId = await moviesService.createMovie({ movie });
-      res.status(201).json({
-        //Como estamos creando el código que debemos devolver es 201
-        data: createMovieId,
-        message: `Movie Created`,
-      });
-    } catch (error) {
-      next(error);
+      try {
+        //Devolvemos el id de la primera película
+        const createMovieId = await moviesService.createMovie({ movie });
+        res.status(201).json({
+          //Como estamos creando el código que debemos devolver es 201
+          data: createMovieId,
+          message: `Movie Created`,
+        });
+      } catch (error) {
+        next(error);
+      }
     }
-  });
+  );
 
   //actualización de la película
-  router.put('/:movieId', async function (req, res, next) {
-    const { movieId } = req.params;
-    const { body: movie } = req;
+  router.put(
+    '/:movieId',
+    validationHandler({ movieId: movieIdSchema }, 'params'),
+    validationHandler(updateMovieSchema),
+    async function (req, res, next) {
+      const { movieId } = req.params;
+      const { body: movie } = req;
+      //El update(put) va a recibir tanto el parámetro, como el cuerpo(body)
 
-    try {
-      const updatedMovieId = await moviesService.updateMovie({
-        movieId,
-        movie,
-      });
-      res.status(200).json({
-        data: updatedMovieId,
-        message: `Movie Updated`,
-      });
-    } catch (error) {
-      next(error);
+      try {
+        const updatedMovieId = await moviesService.updateMovie({
+          movieId,
+          movie,
+        });
+        res.status(200).json({
+          data: updatedMovieId,
+          message: `Movie Updated`,
+        });
+      } catch (error) {
+        next(error);
+      }
     }
-  });
+  );
 
   //Eliminando una película
-  router.delete('/:movieId', async function (req, res, next) {
-    const { movieId } = req.params;
+  router.delete(
+    '/:movieId',
+    validationHandler({ movieId: movieIdSchema }, 'params'),
+    async function (req, res, next) {
+      const { movieId } = req.params;
 
-    try {
-      const deleteMovieId = await moviesService.deleteMovie({ movieId });
-      res.status(200).json({
-        data: deleteMovieId,
-        message: `Movie Deleted`,
-      });
-    } catch (error) {
-      next(error);
+      try {
+        const deleteMovieId = await moviesService.deleteMovie({ movieId });
+        res.status(200).json({
+          data: deleteMovieId,
+          message: `Movie Deleted`,
+        });
+      } catch (error) {
+        next(error);
+      }
     }
-  });
+  );
 
   //Implementación de método PATCH para actualización parcial
   // router.patch('/:movieId', async (req, res, next) => {
