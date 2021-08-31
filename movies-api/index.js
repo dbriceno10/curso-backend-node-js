@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 
 const { config } = require('./config/index');
-const moviesApi = require('./routes/movies.js');
+const moviesApi = require('./routes/movies');
 
 const {
   logErrors,
   errorHandler,
   wrapErrors,
-} = require('./utils/middleware/errorHandlers.js');
+} = require('./utils/middleware/errorHandlers');
 
 const notFoundHandler = require('./utils/middleware/notFoundHandler.js');
 
