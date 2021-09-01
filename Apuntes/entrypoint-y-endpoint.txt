@@ -1,0 +1,47 @@
+Entry point es la URL que el visitante habrá ingresado en su navegador para ver su aplicación o sitio. Antiguamente, cada sección de un sitio web era un entrypoint
+
+- home.html
+- galeria.html
+- contacto.html
+- about us.html
+Con el advenimiento de librerías que proveen ruteo (Backbone, Ract, Angular, Vue) se ha vuelto trivial servir aplicaciones de una sola página (SPA) en donde el visitante llega a un landing y desde ahí puede visitar el resto del sitio, dando la impresión de que navega entre páginas distintas cuando, en realidad, sigue siendo el mismo landing que le muestra distintas secciones según la url que vaya solicitando. El entrypoint contendrá la funcionalidad de actual como router y mostrar distinto contenido según la url solicitada, "interceptando" los links internos.
+
+El visitante ve que la URL va cambiando y realmente siente que se está moviendo entre links, pero no ha dejado el mismo entrypoint.
+
+- Home
+   - galería
+   - contacto
+   - about us
+Hay un delicado equilibro entre tener muy pocos entrypoints con dependencias que no necesitan, o muchos con el manteniemiento que ello conlleva.
+
+Los endpoints son las URLs de un API o un backend que responden a una petición. Los mismos entrypoints tienen que calzar con un endpoint para existir. Algo debe responder para que se renderice un sitio con sentido para el visitante. Por cada entrypoint esperando la visita de un usuario puede haber docenas de endpoints sirviendo los datos para llenar cada gráfico e infografía que se despliega en el entrypoint.
+
+La diferencia entre entrypoint y endpoint es que los endpoints no están pensados para interactuar con el usuario final. Usualmente sólo devolverán json, o no devolverán nada. Y más que frecuentemente, un entrypoint hará varios llamados a distintos endpoints para mostrar estadísticas, galerías, últimos comentarios, etc.
+
+Adicionalmente, se asume que cuando se habla de un endpoint estamos en un entorno RESTful, por lo cual (a diferencia del uso de un browser), el cliente puede usar un mismo endpoint con distintos verbos. Un mismo endpoint, por ejemplo:
+
+/users
+va a devolver una lista de usuarios si usas el verbo GET, y va a crear un usuario si usas el verbo POST. El endpoint por sí mismo no dice nada de las acciones que puedes hacer con él.
+
+La existencia de endpoints usualmente es proporcional a la cantidad de entidades que quieres modelar en tu backend o en tu API. Digamos que por cada entidad debiera existir al menos un endpoint, y por cada uno de ellos, podrías realizar las acciones de crear, leer, actualizar y borrar datos. Y luego, si consideras que cada relación entre dos entidades da lugar a otro endpoint, puede que tengas muchos más. De nuevo, dado el modelo User, si cada usuario tiene N galerías, el endpoint
+
+users/{id}/gallery
+Te va a devolver las galerías del usuario que has pedido. De nuevo en un simple json, porque no está pensado para que el usuario final lo lea directamente.
+
+Si pudieramos clasificarlos brevemente seria:
+
+Entrypoint - URL de entrada a una pagina de un sitio web.
+Endpoint - URL de un servicio que utiliza un sitio web para cargar o consumir informacion.
+Ejemplos de uso:
+
+Una pagina Home de un sitio web es un entrypoint.
+Una API Web se accede a traves de endpoints.
+La relacion que existe entre ellas:
+
+Un entrypoint, como una pagina de Home de un sitio web, puede estar consultado informacion de distintos endpoints para llenar con cierta informacion las secciones de la pagina, siendo simplistas, supongamos que:
+
+La parte superior del sitio web donde se encuetra el menu, consulta a un endpoint.
+La parte lateral del sitio web, consulta otro endpoint.
+La parte principal del sitio web, consulta otro endpoint.
+Y que la parte inferior del sitio web, consulta a un ultimo endpoint.
+Ademas de ello, entendamos a los endpoints como servicios webs que seran usados no solo al acceder a un entrypoint si no tambien al hacer click en un boton, un checkbox, o cualquier evento de interaccion con el usuario.

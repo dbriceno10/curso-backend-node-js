@@ -1,0 +1,99 @@
+Flujo de tests Mocha
+⠀
+
+<h1>Consideramos un test it(mensaje, function () {});</h1>
+⠀
+Si dentro del callback se lanza un error, el test se da por fallido y se pasa al siguiente test.
+
+En caso de que la ejecución del callback termine sin errores entonces se pasa al siguiente test automáticamente.
+⠀
+Si en la ejecución del callback llamamos a una función asíncrona, debemos pasarle una función ‘done’ como parámetro (el nombre es arbitrario).
+⠀
+Si pasamos ese parámetro mocha sabrá que debe esperar a que la ejecutemos para pasar al siguiente test y darlo como aprobado. O en caso de que ejecutemos done(error), sabrá que debe pasar al siguiente pero dándolo como fallido.
+
+it(mensaje, function (done) {
+	setInmediate(() => done());
+});
+En caso de tengamos una promesa podemos simplemente retornarla y mocha esperará a que la promesa se complete, dando el test como aprobado o fallido dependiendo de si se resuelve correctamente o no.
+⠀
+Debemos utilizar el callback done o retornar una promesa, pero no utilizar ambos o se producirá un error.
+
+it(mensaje, async function () {
+	return Promise.resolve('hola');
+});
+⠀
+También podemos realizar un test asíncrono y tratarlo como síncrono con async/await. En este caso, al igual que en el caso síncrono, el test depende de si la función finaliza correctamente o finaliza con un error.
+⠀⠀
+
+it(mensaje, async function () {
+	const promesa = Promise.resolve('hola');
+
+	await promesa;
+});
+⠀
+Como no envolvemos el await en un try/catch, este lanzará un error en caso de que la promesa sea rechazada, por lo tento el test pasará fallido.
+⠀
+
+Testing de endpoints HTTP
+⠀
+Para esto utilizamos una librería llamada supertest, la cual sirve para testear servidores HTTP NODE.js, nos permite envíar solicitudes HTTP de tipo GET, POST, PATCH, PUT, y DELETE, y recibir la respuesta.
+⠀
+supertest nos provee una función a la que le debemos pasar nuestra app express como parámetro (con sus rutas establecidas), y nos retornará un objeto por el cual podemos relizar solicitudes y validaciones.
+⠀
+
+const createRequester = require('supertest');
+const request = createRequester(app);
+
+request
+    .get('/user')
+    .expect('Content-Type', /json/)
+    .expect('Content-Length', '15')
+    .expect(200)
+    .end(function(err, res) {
+        if (err) throw err;
+    });
+⠀
+Si estamos en un test mocha, podemos pasar el done a la función end.
+⠀
+
+request
+    .get('/user')
+    .expect(200)
+    .end(done);
+⠀
+De esta manera, si hay un error mocha recibirá un done con el error y el test fallará, y si no hay error, no fallará porque done no recibirá un error. End recibe un error first callback.
+⠀
+Si no usamos la función end, los expect lanzarán errores en el segundo parámetro y podemos capturarlos de la siguiente manera…
+⠀
+
+request
+    .get('/user')
+    .expect(200, done);
+⠀
+Para leer la respuesta podemos usar un then
+⠀
+
+request
+    .get('/user')
+    .then(response => {
+        assert(response.body.email, 'foo@bar.com');
+    });
+
+COMENTARIOS DE LA CLASE 37: CREACIÓN DE TEST PARA NUESTROS endpoints
+En esta clase usamos los test para verificar las rutas. Y las respuestas esperadas.
+.
+Proxyquire: nos permite hacer “trampa” y modifcar un require dentro de un archivo, en este caso donde encuentre este require:
+'../services/movies' 
+lo remplaza con:
+
+'MoviesServiceMock'
+done o done(): Es la forma de indicar que nuestro test es exitoso.
+//Si el request obtiene un valor de 200 entonces es DONE --> TEST EXITOSO
+request.get('/api/movies').expect(200, done)
+Requerimos ASSERT para comparar objetos.
+Si el Assert falla el programa se termina, es decir el done() nunca se ejecuta. Por tanto el test falla.
+assert.deepEqual(res.body, {
+                    data: moviesMock,
+                    message: 'movies listed'
+                });
+                done();
