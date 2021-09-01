@@ -19,14 +19,14 @@ describe('routes - movies', function () {
       request.get('api/movies').expect(200, done);
     });
 
-    it("should respond with the list of movies", function (done) {
-      request.get("/api/movies").end((err,res) => {
+    it('should respond with the list of movies', function (done) {
+      request.get('/api/movies').end((err, res) => {
         assert.deepEqual(res.body, {
           data: moviesMock,
-          message: `Movies Listed`
-        })
-        done()
-      })
-    })
+          message: `Movies Listed`,
+        });
+        done();
+      });
+    });
   });
 });
