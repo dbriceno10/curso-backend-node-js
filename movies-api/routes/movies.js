@@ -32,7 +32,7 @@ const moviesApi = (app) => {
       // definimos su estructura json
       res.status(200).json({
         data: movies,
-        message: `Movies Listed`,
+        message: 'movies listed',
       });
     } catch (error) {
       next(error);
@@ -55,7 +55,7 @@ const moviesApi = (app) => {
         const movies = await moviesService.getMovie({ movieId });
         res.status(200).json({
           data: movies,
-          message: `Movie Retrieved`,
+          message: 'movie retrieved',
         });
       } catch (error) {
         next(error);
@@ -76,7 +76,7 @@ const moviesApi = (app) => {
         res.status(201).json({
           //Como estamos creando el código que debemos devolver es 201
           data: createMovieId,
-          message: `Movie Created`,
+          message: 'movie created',
         });
       } catch (error) {
         next(error);
@@ -101,7 +101,7 @@ const moviesApi = (app) => {
         });
         res.status(200).json({
           data: updatedMovieId,
-          message: `Movie Updated`,
+          message: 'movie updated',
         });
       } catch (error) {
         next(error);
@@ -120,7 +120,7 @@ const moviesApi = (app) => {
         const deleteMovieId = await moviesService.deleteMovie({ movieId });
         res.status(200).json({
           data: deleteMovieId,
-          message: `Movie Deleted`,
+          message: 'movie deleted',
         });
       } catch (error) {
         next(error);
