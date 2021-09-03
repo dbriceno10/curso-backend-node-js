@@ -9,7 +9,13 @@ const {
 
 const validationHandler = require('../utils/middleware/validationHandler');
 
-const moviesApi = (app) => {
+const cacheResponse = require('../utils/cacheResponse');
+const {
+  FIVE_MINUTES_IN_SECONDS,
+  SIXTY_MINUTES_IN_SECONDS,
+} = require('../utils/time');
+
+function moviesApi(app) {
   //Creamos el router
   const router = express.Router();
   // le decimos a la aplicación que le vamos a pasar como parametro le vamos a decir la ruta de inicio
@@ -22,6 +28,7 @@ const moviesApi = (app) => {
   // Cuando se le asigna un get al home, y el home va a ser api/movies, que fue el que definimos arriba
 
   router.get('/', async function (req, res, next) {
+    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     // router.get('/', async (req, res, next) => {
     const { tags } = req.query;
 
@@ -44,6 +51,7 @@ const moviesApi = (app) => {
     '/:movieId',
     validationHandler({ movieId: movieIdSchema }, 'params'),
     async function (req, res, next) {
+      cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
       // validationHandler por defecto va a tratar de sacar los datos del body, pero como el id de la película se encuentra dentro de los parámetros, los voy a tomar de allí
       const { movieId } = req.params;
       //La diferencia principal entre params y query es que
@@ -146,6 +154,6 @@ const moviesApi = (app) => {
   //     next(error);
   //   }
   // });
-};
+}
 
 module.exports = moviesApi;

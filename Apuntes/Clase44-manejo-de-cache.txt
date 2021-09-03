@@ -1,0 +1,14 @@
+Si estas en windows puede que tengas problemas para ejecutar npm run start
+Tenes que modificar un poco el script
+
+SET NODE_ENV=production & node ./index.js
+
+// Por alguna razón que no logre identificar la configuración de la cache en Windows 10 no funciona utilizando la funcion cacheResponse de la forma que el profe la creo:
+
+// require('dotenv').config();
+
+// function cacheResponse(res, seconds) {
+//   if (process.env.NODE_ENV) {
+//     res.set('Cache-Control', `public, max-age=${seconds}`);
+//   }
+// }
