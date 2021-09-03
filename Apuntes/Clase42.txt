@@ -1,0 +1,10 @@
+Considerando las mejores prácticas para el despliegue
+
+Remover contraseñas quemadas.
+Encapsular código spaghetti.
+Revisar la estructura del proyecto.
+Configurar los scripts de build.
+Agregar soporte de caché.
+Añadir HTTPS y CORS.
+Revisar otras prácticas de seguridad.
+OWASP => The Open Web Application Security Project
